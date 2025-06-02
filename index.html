@@ -28,57 +28,9 @@
         <th>Aksi</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>Belajar HTML dan CSS</td>
-        <td><span class="badge bg-warning text-dark">Belum Selesai</span></td>
-        <td>
-          <button class="btn btn-sm btn-primary me-1" title="Ubah">
-            <i class="bi bi-pencil"></i>
-          </button>
-          <button class="btn btn-sm btn-danger me-1" title="Hapus">
-            <i class="bi bi-trash"></i>
-          </button>
-          <button class="btn btn-sm btn-success" title="Tandai Selesai">
-            <i class="bi bi-check-lg"></i>
-          </button>
-        </td>
-      </tr>
-      
-      <tr>
-        <td>2</td>
-        <td>kerjakan tugas rpl</td>
-        <td><span class="badge bg-warning text-dark">proses</span></td>
-        <td>
-          <button class="btn btn-sm btn-primary me-1" title="Ubah">
-            <i class="bi bi-pencil"></i>
-          </button>
-          <button class="btn btn-sm btn-danger me-1" title="Hapus">
-            <i class="bi bi-trash"></i>
-          </button>
-          <button class="btn btn-sm btn-success" title="Tandai Selesai">
-            <i class="bi bi-check-lg"></i>
-          </button>
-        </td>
-      </tr>
-      
-      <tr>
-        <td>3</td>
-        <td>baca dokumen bootstrap</td>
-        <td><span class="badge bg-warning text-dark">selesai</span></td>
-        <td>
-          <button class="btn btn-sm btn-primary me-1" title="Ubah">
-            <i class="bi bi-pencil"></i>
-          </button>
-          <button class="btn btn-sm btn-danger me-1" title="Hapus">
-            <i class="bi bi-trash"></i>
-          </button>
-          <button class="btn btn-sm btn-success" title="Tandai Selesai">
-            <i class="bi bi-check-lg"></i>
-          </button>
-        </td>
-      </tr>
+    <tbody id="daftar-todo">
+    </tbody>
+    
     </tbody>
   </table>
   
@@ -102,15 +54,49 @@
   </form>
   
   <script type="module">
-    import { tambahTodo } from "./main.js";
+    import { tambahTodo, ambilTodoList } from "./main.js";
     
-    $(document).ready(function() {
-      $("form").submit(async function(event) {
-        event.preventDefault();
+    $(document).ready(async function() {
+      
+      const tbody = $("#daftar-todo");
+      const daftar = await ambilTodoList();
+      
+      let nomor = 1;
+      daftar.forEach((todo) => {
+        const badge = todo.status === "Selesai" ?
+          `<span class="badge bg-success">Selesai</span>` :
+          `<span class="badge bg-warning text-dark">${todo.status}</span>`;
         
-        const namaTugas = $("input.form-control").val();
+        tbody.append(`
+        <tr>
+          <td>${nomor}</td>
+          <td>${todo.teks}</td>
+          <td>${badge}</td>
+          <td>
+            <button class="btn btn-sm btn-primary me-1" title="Ubah"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-sm btn-danger me-1" title="Hapus"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-sm btn-success" title="Tandai Selesai"><i class="bi bi-check-lg"></i></button>
+          </td>
+        </tr>
+      `);
+        nomor++;
+      });
+      
+      // Menangani penambahan data dari form
+      $("form").submit(async function(e) {
+        e.preventDefault();
+        const nama = $("input.form-control").val();
         const status = $("select.form-select").val();
         
+        if (nama && status) {
+          await tambahTodo(nama, status);
+          location.reload();
+        }
+      });
+      
+      $("form").submit(async function(event) {
+        event.preventDefault();
+      
         if (!namaTugas || !status) return;
         
         await tambahTodo(namaTugas, status);

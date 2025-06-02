@@ -28,9 +28,9 @@ const firebaseConfig = {
 const aplikasi = initializeApp(firebaseConfig)
 const basisdata = getFirestore(aplikasi)
 
-export async function ambilDaftarTodo() {
+export async function ambilTodoList() {
   try {
-    const refDokumen = collection(basisdata, "todo");
+    const refDokumen = collection(basisdata, "todo-list");
     const kueri = query(refDokumen, orderBy("teks")); // Mengurutkan berdasarkan teks
     const cuplikanKueri = await getDocs(kueri);
     
