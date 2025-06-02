@@ -50,7 +50,7 @@ export async function tambahTodo(teks, status) {
   try {
     
     // Menyimpan data ke Firestore
-    const refDokumen = await addDoc(collection(basisdata, "todo"), {
+    const refDokumen = await addDoc(collection(basisdata, "todo-list"), {
       teks: teks,
       status: status
     });
