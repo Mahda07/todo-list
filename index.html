@@ -84,22 +84,40 @@
   
   <form class="row g-3 mb-4">
     <div class="col-md-6">
-        <input type="text" class="form-control" placeholder="Nama Tugas" required>
+      <input type="text" class="form-control" placeholder="Nama Tugas" required>
     </div>
     <div class="col-md-4">
-        <select class="form-select" required>
-            <option value="">Pilih Status</option>
-            <option value="Belum Selesai">Belum Selesai</option>
-            <option value="Selesai">Selesai</option>
-        </select>
+      <select class="form-select" required>
+        <option value="">Pilih Status</option>
+        <option value="Belum Selesai">Belum Selesai</option>
+        <option value="Selesai">Selesai</option>
+      </select>
     </div>
     <div class="col-md-2">
-        <button type="submit" class="btn btn-primary w-100">
-            <i class="bi bi-plus-circle"></i> Tambah
-        </button>
+      <button type="submit" class="btn btn-primary w-100">
+        <i class="bi bi-plus-circle"></i> Tambah
+      </button>
     </div>
-</form>
-
+  </form>
+  
+  <script type="module">
+    import { tambahTodo } from "./main.js";
+    
+    $(document).ready(function() {
+      $("form").submit(async function(event) {
+        event.preventDefault();
+        
+        const namaTugas = $("input.form-control").val();
+        const status = $("select.form-select").val();
+        
+        if (!namaTugas || !status) return;
+        
+        await tambahTodo(namaTugas, status);
+        window.location.reload(); // Refresh halaman untuk melihat perubahan
+      });
+    });
+  </script>
+  
 </body>
 
 </html>
