@@ -45,20 +45,20 @@ export async function ambilDaftarTodo() {
   }
 }
 
-export async function tambahTodo(teks) {
+// Fungsi untuk menambahkan todo dengan status teks
+export async function tambahTodo(teks, status) {
   try {
+    
     // Menyimpan data ke Firestore
     const refDokumen = await addDoc(collection(basisdata, "todo"), {
       teks: teks,
-      status: false // status default: belum selesai
+      status: status
     });
-    
-    // Menampilkan pesan berhasil
+
     console.log("Berhasil menyimpan todo");
     return refDokumen.id;
   } catch (e) {
-    // Menampilkan pesan gagal
-    console.log("Gagal menyimpan todo: " + e);
+    console.log("Gagal menyimpan todo: " + e.message);
     return null;
   }
 }
