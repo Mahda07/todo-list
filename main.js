@@ -8,7 +8,7 @@ import {
   addDoc,
   deleteDoc,
   updateDoc,
-  query,
+  query, 
   orderBy,
   where
 } from 'https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js'
@@ -42,5 +42,23 @@ export async function ambilDaftarTodo() {
   } catch (error) {
     console.error("Gagal mengambil data todo:", error);
     return [];
+  }
+}
+
+export async function tambahTodo(teks) {
+  try {
+    // Menyimpan data ke Firestore
+    const refDokumen = await addDoc(collection(basisdata, "todo"), {
+      teks: teks,
+      status: false // status default: belum selesai
+    });
+    
+    // Menampilkan pesan berhasil
+    console.log("Berhasil menyimpan todo");
+    return refDokumen.id;
+  } catch (e) {
+    // Menampilkan pesan gagal
+    console.log("Gagal menyimpan todo: " + e);
+    return null;
   }
 }
